@@ -18,7 +18,9 @@ CFLAGS := -O3
 CWARNINGS := -Werror -Wall -Wextra -pedantic
 CINCLUDES := -Isrc
 CLIBS := -lncurses
-CLINT := --syntax-only
+
+CFORMAT := clang-format -i
+CTIDY := clang-tidy --checks=-*,clang-analyzer-*,-clang-analyzer-cplusplus-*
 
 SOURCE_DIR := src
 BIN_DIR := bin
@@ -27,8 +29,8 @@ HEADERS := $(wildcard $(SOURCE_DIR)/*.h)
 OBJECTS := $(patsubst %.c, $(BIN_DIR)/%.o, $(SOURCES))
 OUTFILE := $(BIN_DIR)/minesweeper
 
-.PHONY: all lint clean
-all: build
+.PHONY: all lint precompile postcompile compile build clean run done
+all: lint compile build run done
 
 
 # Automatically create targets and gather their prerequisites
@@ -36,7 +38,6 @@ define create-ctarget
 $1
 > @echo -en "\e[37m[\e[34m?\e[37m]\e[0m $$< \e[36m⇒\e[0m $$@"
 > @mkdir -p $$(dir $$@)
-> @sleep 1
 > @if $(CC) -o $$@ -c $(CFLAGS) $(CWARNINGS) $(CINCLUDES) $$<>/dev/null 2>&1;
 > @then echo -e "\r\e[37m[\e[32m✓\e[37m]\e[0m";
 > @else echo -e "\r\e[37m[\e[31m✗\e[37m]\e[0m";
@@ -53,11 +54,10 @@ $(foreach src,$(SOURCES),$(eval $(call create-ctarget,$(shell $(CC) -MM -MT $(pa
 
 
 # Link and build outfile
-build: compile $(OUTFILE) done
+build: $(OUTFILE)
 $(OUTFILE): $(OBJECTS)
 > @echo -e "\e[1m\e[35mLINKING\e[0m"
 > @echo -en "\e[37m[\e[34m?\e[37m]\e[0m $^ \e[36m⇒\e[0m $@"
-> @sleep 1;
 > @mkdir -p $(dir $@)
 > @if $(CC) -o $@ $^ $(CLIBS)>/dev/null 2>&1;
 > @then echo -e "\r\e[37m[\e[32m✓\e[37m]\e[0m";
@@ -69,11 +69,36 @@ done:
 > @echo -e "\e[1m\e[48;5;28m\e[37mDone!\e[0m"
 
 
-# Lint
-lint: $(SOURCES) $(HEADERS)
+# Run out
+run: $(OUTFILE)
+> @$(OUTFILE)
+
+
+# Create linter targets for source and header files
+define create-linttarget
+$1
+> @echo -en "\e[37m[\e[34m?\e[37m]\e[0m $$<"
+> @if ! $(CFORMAT) $$<>/dev/null 2>&1;
+> @then echo -e "\r\e[37m[\e[31m✗\e[37m]\e[0m";
+> @$(CFORMAT) $$<;
+> @fi;
+> @if $(CTIDY) $$<>/dev/null 2>&1;
+> @then echo -e "\r\e[37m[\e[32m✓\e[37m]\e[0m";
+> @else echo -e "\r\e[37m[\e[31m✗\e[37m]\e[0m";
+> @$(CTIDY) $$<;
+> @fi;
+> @mkdir -p $$(dir $$@)
+> @touch $$@
+endef
+
+$(foreach src,$(SOURCES),$(eval $(call create-linttarget,$(patsubst %.c, $(BIN_DIR)/%.cl, $(src)): $(src))))
+$(foreach header,$(HEADERS),$(eval $(call create-linttarget,$(patsubst %.h, $(BIN_DIR)/%.hl, $(header)): $(header))))
+
+prelint:
 > @echo -e "\e[1m\e[35mLINTING\e[0m"
-> @$(foreach src,$^,echo -en "\e[37m[\e[34m?\e[37m]\e[0m $(src)";sleep 1;if $(CC) $(CLINT) $(CWARNINGS) $(CINCLUDES) $(src)>/dev/null 2>&1;then echo -e "\r\e[37m[\e[32m✓\e[37m]\e[0m";else echo -e "\r\e[37m[\e[31m✗\e[37m]\e[0m";$(CC) $(CLINT) $(CWARNINGS) $(CINCLUDES) $(src);fi;)
+postlint:
 > @echo -e "\e[94mDone linting\e[0m\n"
+lint: prelint $(patsubst %.h, $(BIN_DIR)/%.hl, $(HEADERS)) $(patsubst %.c, $(BIN_DIR)/%.cl, $(SOURCES)) postlint
 
 
 # Clean

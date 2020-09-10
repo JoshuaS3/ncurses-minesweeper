@@ -1,0 +1,36 @@
+---
+BasedOnStyle: 'Google'
+Language: Cpp
+
+AlignAfterOpenBracket: AlwaysBreak
+AlignEscapedNewlines: Left
+AlignTrailingComments: true
+
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLoopsOnASingleLine: true
+
+AlwaysBreakAfterReturnType: None
+BinPackParameters: false
+
+BreakBeforeBraces: Attach
+BreakBeforeTernaryOperators: true
+BreakStringLiterals: true
+
+ColumnLimit: 80
+IndentWidth: 4
+TabWidth: 4
+MaxEmptyLinesToKeep: 2
+UseTab: Never
+
+IncludeBlocks: Regroup
+SortIncludes: true
+
+IndentCaseLabels: true
+IndentGotoLabels: false
+IndentPPDirectives: AfterHash
+IndentWrappedFunctionNames: true
+
+PointerAlignment: Right
+SpacesBeforeTrailingComments: 1
