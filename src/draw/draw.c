@@ -2,11 +2,9 @@
 
 #include "../state.h"
 
+#include "pages.h"
 #include "text.h"
 #include "winsize.h"
-
-#include "help.h"
-#include "title.h"
 
 
 int draw(game_state *state, int ch) {

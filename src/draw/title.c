@@ -1,9 +1,8 @@
 #include <ncurses.h>
 
 #include "../state.h"
+#include "pages.h"
 #include "text.h"
-
-#include "help.h"
 
 // clang-format off
 const char *title_screen_splash[7] = {

@@ -1,9 +1,8 @@
 #include <ncurses.h>
 
 #include "../state.h"
+#include "pages.h"
 #include "text.h"
-
-#include "title.h"
 
 const char *help_screen_title = "HELP";
 
