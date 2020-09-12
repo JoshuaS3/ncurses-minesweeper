@@ -23,9 +23,7 @@ const char *title_screen_splash_small[5] = {
 // clang-format on
 
 const char *title_screen_splash_text = "MINESWEEPER";
-
 const char *title_screen_buttons[4] = {"PLAY", "OPTIONS", "HELP", "EXIT"};
-
 const char *title_screen_copyright = "Copyright (c) Joshua 'joshuas3' Stockin 2020";
 
 int draw_title_screen(game_state *state, int ch) {
@@ -52,24 +50,28 @@ int draw_title_screen(game_state *state, int ch) {
     attron(A_BOLD);
 
     // draw splash screen
+    int vdisplace = 0;
     if (COLS > 130 && LINES > 18) {
         for (int i = 0; i < 7; i++) {
             const char *this_splash = title_screen_splash[i];
-            mvprintw(centery() - 8 + i, centerx(this_splash), this_splash);
+            mvprintw(centery() - 6 + i, centerx(this_splash), this_splash);
+            vdisplace = 2;
         }
     } else if (COLS > 85 && LINES > 14) {
         for (int i = 0; i < 5; i++) {
             const char *this_splash = title_screen_splash_small[i];
-            mvprintw(centery() - 6 + i, centerx(this_splash), this_splash);
+            mvprintw(centery() - 5 + i, centerx(this_splash), this_splash);
+            vdisplace = 1;
         }
     } else {
-        mvprintw(centery() - 2, centerx(title_screen_splash_text), title_screen_splash_text);
+        mvprintw(centery() - 3, centerx(title_screen_splash_text), title_screen_splash_text);
+        vdisplace = -1;
     }
 
     // draw button inputs
     for (int i = 0; i < 4; i++) {
         if (state->page_selection == 'A' + i) attron(A_STANDOUT);
-        mvprintw(centery() + i, centerx(title_screen_buttons[i]), title_screen_buttons[i]);
+        mvprintw(centery() + i + vdisplace, centerx(title_screen_buttons[i]), title_screen_buttons[i]);
         if (state->page_selection == 'A' + i) attroff(A_STANDOUT);
     }
 
