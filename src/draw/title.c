@@ -1,9 +1,9 @@
 #include <ncurses.h>
 
-#include "text.h"
-#include "title.h"
-
 #include "../state.h"
+#include "text.h"
+
+#include "help.h"
 
 // clang-format off
 const char *title_screen_splash[7] = {
@@ -28,21 +28,27 @@ const char *title_screen_copyright = "Copyright (c) Joshua 'joshuas3' Stockin 20
 
 int draw_title_screen(game_state *state, int ch) {
     // input handling
-    if (ch == 'j' || ch == 'J' || ch == KEY_DOWN) {
+    if (ch == 'j' || ch == 'J') {
         if (state->page_selection != 3) {
             state->page_selection++;
         } else {
             beep();
         }
-    } else if (ch == 'k' || ch == 'K' || ch == KEY_UP) {
+    } else if (ch == 'k' || ch == 'K') {
         if (state->page_selection != 0) {
             state->page_selection--;
         } else {
             beep();
         }
     } else if (ch == 10 || ch == ' ' || ch == KEY_ENTER) { // enter key pressed, process
-        if (state->page_selection == 3) {                  // QUIT
-            return 1;
+        switch (state->page_selection) {
+            case 2: { // HELP
+                state->page = Help;
+                return draw_help_screen(state, 0);
+            }
+            case 3: { // QUIT
+                return 1;
+            }
         }
     }
 
