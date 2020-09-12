@@ -13,7 +13,7 @@ int main(void) {
     printf("Initializing game state\n");
     game_state *state = calloc(1, sizeof(game_state));
     state->page = Title;
-    state->page_selection = 'A';
+    state->page_selection = 0;
     game_board *board = calloc(1, sizeof(game_board));
     state->board = board;
 

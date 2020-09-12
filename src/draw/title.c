@@ -29,19 +29,19 @@ const char *title_screen_copyright = "Copyright (c) Joshua 'joshuas3' Stockin 20
 int draw_title_screen(game_state *state, int ch) {
     // input handling
     if (ch == 'j' || ch == 'J' || ch == KEY_DOWN) {
-        if (state->page_selection != 'D') {
+        if (state->page_selection != 3) {
             state->page_selection++;
         } else {
             beep();
         }
     } else if (ch == 'k' || ch == 'K' || ch == KEY_UP) {
-        if (state->page_selection != 'A') {
+        if (state->page_selection != 0) {
             state->page_selection--;
         } else {
             beep();
         }
     } else if (ch == 10 || ch == ' ' || ch == KEY_ENTER) { // enter key pressed, process
-        if (state->page_selection == 'D') {                // QUIT
+        if (state->page_selection == 3) {                  // QUIT
             return 1;
         }
     }
@@ -70,9 +70,9 @@ int draw_title_screen(game_state *state, int ch) {
 
     // draw button inputs
     for (int i = 0; i < 4; i++) {
-        if (state->page_selection == 'A' + i) attron(A_STANDOUT);
+        if (state->page_selection == i) attron(A_STANDOUT);
         mvprintw(centery() + i + vdisplace, centerx(title_screen_buttons[i]), title_screen_buttons[i]);
-        if (state->page_selection == 'A' + i) attroff(A_STANDOUT);
+        if (state->page_selection == i) attroff(A_STANDOUT);
     }
 
     // write copyright line @ bottom
