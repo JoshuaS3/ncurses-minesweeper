@@ -56,7 +56,8 @@ precompile:
 > @echo -e "\e[1m\e[35mCOMPILING\e[0m"
 postcompile:
 > @echo -e "\e[94mDone compiling\e[0m\n"
-$(foreach src,$(SOURCES),$(eval $(call create-ctarget,$(shell $(CC) -MM -MT $(patsubst %.c, $(BIN_DIR)/%.o, $(src)) $(src)))))
+_MM_BACKSLASH := $\\
+$(foreach src,$(SOURCES),$(eval $(call create-ctarget,$(filter-out ${_MM_BACKSLASH},$(shell $(CC) -MM -MT $(patsubst %.c, $(BIN_DIR)/%.o, $(src)) $(src))))))
 
 
 # Link and build outfile
@@ -80,7 +81,9 @@ done:
 
 # Run outfile
 run: $(OUTFILE)
-> @$(OUTFILE)
+> @echo -e "\e[1m\e[93m=== [ PROGRAM OUTPUT ] ===\e[0m"
+> $(OUTFILE)
+> @echo -e "\e[1m\e[93m==========================\e[0m\n"
 
 
 # Create linter targets for source and header files
