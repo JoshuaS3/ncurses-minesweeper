@@ -28,8 +28,8 @@ SOURCE_DIR := src
 BIN_DIR := bin
 
 # Inputs and outputs
-SOURCES := $(wildcard $(SOURCE_DIR)/*.c)
-HEADERS := $(wildcard $(SOURCE_DIR)/*.h)
+SOURCES := $(shell find $(SOURCE_DIR) -name *.c)
+HEADERS := $(shell find $(SOURCE_DIR) -name *.h)
 OBJECTS := $(patsubst %.c, $(BIN_DIR)/%.o, $(SOURCES))
 OUTFILE := $(BIN_DIR)/$(PROJECT_NAME)
 
