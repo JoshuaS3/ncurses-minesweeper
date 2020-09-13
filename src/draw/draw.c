@@ -9,11 +9,15 @@
 
 int draw(game_state *state, int ch) {
     clear();
-    draw_winsize();
     int ret = 0;
+    attron(COLOR_PAIR(5));
     switch (state->page) {
         case Title: {
             ret = draw_title_screen(state, ch);
+            break;
+        }
+        case Game: {
+            ret = draw_game(state, ch);
             break;
         }
         case Options: {
@@ -27,6 +31,8 @@ int draw(game_state *state, int ch) {
         default:
             return 1;
     }
+    draw_winsize();
+    attroff(COLOR_PAIR(5));
     refresh();
     return ret;
 }

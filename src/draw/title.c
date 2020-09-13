@@ -30,17 +30,21 @@ int draw_title_screen(game_state *state, int ch) {
     if (ch == 'j' || ch == 'J') {
         if (state->page_selection != 3) {
             state->page_selection++;
-        } else {
+        } else
             beep();
-        }
     } else if (ch == 'k' || ch == 'K') {
         if (state->page_selection != 0) {
             state->page_selection--;
-        } else {
+        } else
             beep();
-        }
     } else if (ch == 10 || ch == ' ' || ch == KEY_ENTER) { // enter key pressed, process
         switch (state->page_selection) {
+            case 0: {
+                state->page = Game;
+                state->page_selection = 0;
+                state->board->current_cell = 75;
+                return draw_game(state, 0);
+            }
             case 1: {
                 state->page = Options;
                 state->page_selection = 0;
@@ -56,11 +60,10 @@ int draw_title_screen(game_state *state, int ch) {
         }
     }
 
-    // setup
-    attron(A_BOLD);
+    int vdisplace = 0;
 
     // draw splash screen
-    int vdisplace = 0;
+    attron(A_BOLD);
     if (COLS > 130 && LINES > 18) {
         for (int i = 0; i < 7; i++) {
             const char *this_splash = title_screen_splash[i];
@@ -77,6 +80,7 @@ int draw_title_screen(game_state *state, int ch) {
         mvprintw(centery() - 3, centerx(title_screen_splash_text), title_screen_splash_text);
         vdisplace = -1;
     }
+    attroff(A_BOLD);
 
     // draw button inputs
     for (int i = 0; i < 4; i++) {
@@ -86,7 +90,6 @@ int draw_title_screen(game_state *state, int ch) {
     }
 
     // write copyright line @ bottom
-    attroff(A_BOLD);
     mvprintw(LINES - 1, centerx(title_screen_copyright), title_screen_copyright);
 
     return 0;
