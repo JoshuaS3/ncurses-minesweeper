@@ -16,6 +16,10 @@ int draw(game_state *state, int ch) {
             ret = draw_title_screen(state, ch);
             break;
         }
+        case Options: {
+            ret = draw_options_screen(state, ch);
+            break;
+        }
         case Help: {
             ret = draw_help_screen(state, ch);
             break;

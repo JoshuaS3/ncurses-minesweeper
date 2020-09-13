@@ -16,6 +16,9 @@ int main(void) {
     state->page_selection = 0;
     game_board *board = calloc(1, sizeof(game_board));
     state->board = board;
+    state->board->width = 30;
+    state->board->height = 16;
+    state->board->mine_count = 99;
 
     printf("Initializing ncurses\n");
 

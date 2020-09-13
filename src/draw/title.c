@@ -41,6 +41,11 @@ int draw_title_screen(game_state *state, int ch) {
         }
     } else if (ch == 10 || ch == ' ' || ch == KEY_ENTER) { // enter key pressed, process
         switch (state->page_selection) {
+            case 1: {
+                state->page = Options;
+                state->page_selection = 0;
+                return draw_options_screen(state, 0);
+            }
             case 2: { // HELP
                 state->page = Help;
                 return draw_help_screen(state, 0);

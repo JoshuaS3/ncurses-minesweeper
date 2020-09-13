@@ -3,7 +3,7 @@
 
 #include "stdint.h"
 
-typedef enum DrawPage { Title, Help } DrawPage;
+typedef enum DrawPage { Title, Options, Help } DrawPage;
 typedef enum GameStatus { Playing, Done, Kaboom } GameStatus;
 
 typedef struct game_board_cell {
