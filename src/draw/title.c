@@ -63,7 +63,7 @@ int draw_title_screen(game_state *state, int ch) {
     int vdisplace = 0;
 
     // draw splash screen
-    attron(A_BOLD);
+    attron(A_BOLD | COLOR_PAIR(4));
     if (COLS > 130 && LINES > 18) {
         for (int i = 0; i < 7; i++) {
             const char *this_splash = title_screen_splash[i];
@@ -80,7 +80,6 @@ int draw_title_screen(game_state *state, int ch) {
         mvprintw(centery() - 3, centerx(title_screen_splash_text), title_screen_splash_text);
         vdisplace = -1;
     }
-    attroff(A_BOLD);
 
     // draw button inputs
     for (int i = 0; i < 4; i++) {
@@ -88,9 +87,12 @@ int draw_title_screen(game_state *state, int ch) {
         mvprintw(centery() + i + vdisplace, centerx(title_screen_buttons[i]), title_screen_buttons[i]);
         if (state->page_selection == i) attroff(A_STANDOUT);
     }
+    attroff(A_BOLD);
 
     // write copyright line @ bottom
     mvprintw(LINES - 1, centerx(title_screen_copyright), title_screen_copyright);
+
+    attroff(COLOR_PAIR(4));
 
     return 0;
 }

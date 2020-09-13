@@ -30,7 +30,7 @@ int draw_help_screen(game_state *state, int ch) {
     // draw help screen
     int mid = centery();
 
-    attron(A_BOLD);
+    attron(A_BOLD | COLOR_PAIR(2));
     mvaddstr(mid - 7, centerx(help_screen_title), help_screen_title);
     attroff(A_BOLD);
 
@@ -40,7 +40,7 @@ int draw_help_screen(game_state *state, int ch) {
 
     attron(A_STANDOUT);
     mvaddstr(mid + 7, centerx(help_screen_back), help_screen_back);
-    attroff(A_STANDOUT);
+    attroff(A_STANDOUT | COLOR_PAIR(2));
 
     return 0;
 }

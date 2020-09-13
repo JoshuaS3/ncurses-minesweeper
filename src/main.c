@@ -37,5 +37,9 @@ int main(void) {
 
     endwin();
 
+    free(board->cells);
+    free(board);
+    free(state);
+
     return 0;
 }

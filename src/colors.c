@@ -1,8 +1,8 @@
 #include <ncurses.h>
 
 int init_colorpairs(void) {
-    start_color();
     use_default_colors();
+    start_color();
     init_pair(1, COLOR_BLUE, -1);
     init_pair(2, COLOR_GREEN, -1);
     init_pair(3, COLOR_RED, -1);

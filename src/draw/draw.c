@@ -10,7 +10,6 @@
 int draw(game_state *state, int ch) {
     clear();
     int ret = 0;
-    attron(COLOR_PAIR(5));
     switch (state->page) {
         case Title: {
             ret = draw_title_screen(state, ch);
@@ -32,7 +31,6 @@ int draw(game_state *state, int ch) {
             return 1;
     }
     draw_winsize();
-    attroff(COLOR_PAIR(5));
     refresh();
     return ret;
 }

@@ -69,7 +69,7 @@ int draw_options_screen(game_state *state, int ch) {
 
     int y = centery();
 
-    attron(A_BOLD);
+    attron(A_BOLD | COLOR_PAIR(1));
     mvaddstr(y - 3, centerx(options_screen_title), options_screen_title);
     attroff(A_BOLD);
 
@@ -119,6 +119,8 @@ int draw_options_screen(game_state *state, int ch) {
             }
         }
     }
+
+    attroff(COLOR_PAIR(1));
 
     return 0;
 }
