@@ -30,7 +30,7 @@ int draw_game(game_state *state, int ch) {
     attron(A_BOLD);
     for (int cell = 0; cell < board->width * board->height; cell++) {
         if (board->current_cell == cell) attron(A_STANDOUT);
-        int x = (int)(COLS / 2) - board->width / 2 + cell % board->width;
+        int x = (int)(COLS / 2) - board->width + cell % board->width * 2;
         int y = 1 + cell / board->width;
         if (board->current_cell == cell) attron(A_STANDOUT);
         if (board->cells[cell].flagged) {
