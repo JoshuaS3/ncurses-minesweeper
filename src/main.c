@@ -33,6 +33,7 @@ int main(void) {
     board->height = 16;
     board->mine_count = 99;
     board->mines_left = 99;
+    board->current_cell = board->width / 2;
     board->cells = calloc(board->width * board->height, sizeof(game_board_cell));
     reset_board(board);
 

@@ -9,6 +9,8 @@
  * preserved in all copies or distributions of this software's source.
  */
 
+#include <ncurses.h>
+
 #include "../state.h"
 
 void check_done(game_board *board) {
@@ -19,4 +21,5 @@ void check_done(game_board *board) {
         }
     }
     board->status = Done; // no missing good cells, done
+    flash();
 }

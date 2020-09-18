@@ -172,6 +172,7 @@ int draw_options_screen(game_state *state, int ch) {
                 break;
             }
         }
+        state->board->current_cell = state->board->width / 2;
     }
 
     attroff(COLOR_PAIR(1));

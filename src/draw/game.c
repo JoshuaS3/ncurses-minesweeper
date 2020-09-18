@@ -18,20 +18,20 @@
 #include "pages.h"
 #include "text.h"
 
+static int elapsed = 0;
 void render_topbar(int left, int right, game_board *board) {
     if (board->status == Waiting) {
-        mvaddstr(0, right - 4, "000");
-        mvprintw(0, left, "%03d", board->mines_left);
-    } else if (board->status != Kaboom && board->status != Done) {
-        attron(A_BOLD);
-        time_t diff = time(NULL) - board->time;
-        if (diff < 999)
-            mvprintw(0, right - 4, "%03d", time(NULL) - board->time);
-        else
-            mvaddstr(0, right - 4, "999");
-        mvprintw(0, left, "%03d", board->mines_left);
-        attroff(A_BOLD);
+        elapsed = 0;
+    } else if (board->status == Playing) {
+        elapsed = time(NULL) - board->time;
     }
+    attron(A_BOLD);
+    if (elapsed < 999)
+        mvprintw(0, right - 4, "%03d", elapsed);
+    else
+        mvaddstr(0, right - 4, "999");
+    mvprintw(0, left, "%03d", board->mines_left);
+    attroff(A_BOLD);
     int center = (int)(COLS / 2 - 1);
     switch (board->status) {
         case Waiting:
