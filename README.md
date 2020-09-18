@@ -20,7 +20,7 @@ information.
 Currently functional on all systems with an ncurses library. PDCurses may be
 dropped in and linked on Windows, although this hasn't been tested.
 
-Requirements: `build-essentials libncurses-dev`
+Requirements: `build-essential libncurses-dev`
 
 Compiling and linking:
 ```
