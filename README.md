@@ -6,7 +6,7 @@ Terminal game of Minesweeper, implemented in C with ncurses.
 
 Minesweeper is a logic game where mines are hidden in a grid of squares. The
 object is to open all the safe squares in the shortest time possible. Use
-<hjkl> to move and <SPACE> to select. Read the Help page for more information.
+\<hjkl\> to move and \<SPACE\> to select. Read the Help page for more information.
 
 ![Title screen](https://i.imgur.com/HRhl4B2.png)
 ![Ready to start](https://i.imgur.com/HObmgcl.png)
