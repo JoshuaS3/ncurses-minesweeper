@@ -1,3 +1,14 @@
+/* ncurses-minesweeper Copyright (c) 2020 Joshua 'joshuas3' Stockin
+ * <https://joshstock.in>
+ * <https://github.com/JoshuaS3/lognestmonster>
+ *
+ * This software is licensed and distributed under the terms of the MIT License.
+ * See the MIT License in the LICENSE file of this project's root folder.
+ *
+ * This comment block and its contents, including this disclaimer, MUST be
+ * preserved in all copies or distributions of this software's source.
+ */
+
 #include <ncurses.h>
 
 #include "../state.h"
@@ -21,11 +32,25 @@ const char *help_screen_back = "Back";
 
 int draw_help_screen(game_state *state, int ch) {
     // input handling
-    if (ch == 10 || ch == ' ' || ch == KEY_ENTER) {
-        state->page = Title;
-        return draw_title_screen(state, 0);
-    } else if (ch == 'k' || ch == 'K' || ch == 'j' || ch == 'J')
-        beep();
+    switch (ch) {
+        case -1:
+            return 0;
+        case KEY_RESIZE:
+            clear();
+            break;
+        case 10:
+        case ' ':
+        case KEY_ENTER: {
+            clear();
+            state->page = Title;
+            return draw_title_screen(state, 0);
+            break;
+        }
+        case 0:
+            break;
+        default:
+            beep();
+    }
 
     // draw help screen
     int mid = centery();

@@ -1,6 +1,18 @@
+/* ncurses-minesweeper Copyright (c) 2020 Joshua 'joshuas3' Stockin
+ * <https://joshstock.in>
+ * <https://github.com/JoshuaS3/lognestmonster>
+ *
+ * This software is licensed and distributed under the terms of the MIT License.
+ * See the MIT License in the LICENSE file of this project's root folder.
+ *
+ * This comment block and its contents, including this disclaimer, MUST be
+ * preserved in all copies or distributions of this software's source.
+ */
+
 #include <stdlib.h>
 
 #include "../state.h"
+#include "kaboom.h"
 
 int16_t *list_nearby_cells(game_board *board, uint16_t cell) {
     int16_t *cells = (int16_t *)calloc(9, sizeof(int16_t));
@@ -44,9 +56,16 @@ void recursively_open_nearby_cells(game_board *board, uint16_t cell) {
     for (int i = 0; i < 9; i++) {
         uint16_t c = nearby[i];
         game_board_cell *x = &board->cells[c];
-        if (c != cell && !x->opened) {
+        if (c != cell && !x->opened && !x->flagged) {
+            // open unopened cell
             x->opened = 1;
-            if (x->surrounding_bomb_count == 0 && !x->is_bomb && !x->flagged) recursively_open_nearby_cells(board, c);
+            if (!x->is_bomb && x->surrounding_bomb_count == 0)
+                // recursive open if not bomb, 0 surrounding bombs, AND not flagged
+                recursively_open_nearby_cells(board, c);
+            else if (x->is_bomb) {
+                kaboom(board);
+                return;
+            }
         }
     }
     free(nearby);

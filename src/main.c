@@ -1,9 +1,21 @@
+/* ncurses-minesweeper Copyright (c) 2020 Joshua 'joshuas3' Stockin
+ * <https://joshstock.in>
+ * <https://github.com/JoshuaS3/lognestmonster>
+ *
+ * This software is licensed and distributed under the terms of the MIT License.
+ * See the MIT License in the LICENSE file of this project's root folder.
+ *
+ * This comment block and its contents, including this disclaimer, MUST be
+ * preserved in all copies or distributions of this software's source.
+ */
+
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "colors.h"
 #include "draw/draw.h"
+#include "game/reset.h"
 #include "state.h"
 
 int main(void) {
@@ -16,11 +28,16 @@ int main(void) {
     state->page_selection = 0;
     game_board *board = calloc(1, sizeof(game_board));
     state->board = board;
-    state->board->width = 30;
-    state->board->height = 16;
-    state->board->mine_count = 99;
+    board->status = Waiting;
+    board->width = 30;
+    board->height = 16;
+    board->mine_count = 99;
+    board->mines_left = 99;
+    board->cells = calloc(board->width * board->height, sizeof(game_board_cell));
+    reset_board(board);
 
     initscr();
+    timeout(0);
     noecho();
     cbreak();
 

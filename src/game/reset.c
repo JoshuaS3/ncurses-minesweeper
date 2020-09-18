@@ -9,18 +9,20 @@
  * preserved in all copies or distributions of this software's source.
  */
 
-#include <ncurses.h>
+#include <stdlib.h>
+#include <time.h>
 
-int init_colorpairs(void) {
-    use_default_colors();
-    start_color();
-    init_pair(1, COLOR_BLUE, -1);
-    init_pair(2, COLOR_GREEN, -1);
-    init_pair(3, COLOR_RED, -1);
-    init_pair(4, COLOR_MAGENTA, -1);
-    init_pair(5, COLOR_RED, -1);
-    init_pair(6, COLOR_CYAN, -1);
-    init_pair(7, COLOR_WHITE, -1);
-    init_pair(8, COLOR_MAGENTA, -1);
-    return 0;
+#include "../state.h"
+
+void reset_board(game_board *board) {
+    board->status = Waiting;
+    board->mines_left = board->mine_count;
+    board->time = time(NULL);
+    for (int i = 0; i < board->width * board->height; i++) {
+        game_board_cell *cell = &board->cells[i];
+        cell->is_bomb = 0;
+        cell->flagged = 0;
+        cell->opened = 0;
+        cell->surrounding_bomb_count = 0;
+    }
 }

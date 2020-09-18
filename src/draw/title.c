@@ -1,3 +1,14 @@
+/* ncurses-minesweeper Copyright (c) 2020 Joshua 'joshuas3' Stockin
+ * <https://joshstock.in>
+ * <https://github.com/JoshuaS3/lognestmonster>
+ *
+ * This software is licensed and distributed under the terms of the MIT License.
+ * See the MIT License in the LICENSE file of this project's root folder.
+ *
+ * This comment block and its contents, including this disclaimer, MUST be
+ * preserved in all copies or distributions of this software's source.
+ */
+
 #include <ncurses.h>
 
 #include "../state.h"
@@ -26,44 +37,63 @@ const char *title_screen_buttons[4] = {"PLAY", "OPTIONS", "HELP", "EXIT"};
 const char *title_screen_copyright = "Copyright (c) Joshua 'joshuas3' Stockin 2020";
 
 int draw_title_screen(game_state *state, int ch) {
-    // input handling
-    if (ch == 'j' || ch == 'J') {
-        if (state->page_selection != 3) {
-            state->page_selection++;
-        } else
-            beep();
-    } else if (ch == 'k' || ch == 'K') {
-        if (state->page_selection != 0) {
-            state->page_selection--;
-        } else
-            beep();
-    } else if (ch == 10 || ch == ' ' || ch == KEY_ENTER) { // enter key pressed, process
-        switch (state->page_selection) {
-            case 0: {
-                state->page = Game;
-                state->page_selection = 0;
-                state->board->current_cell = 75;
-                return draw_game(state, 0);
-            }
-            case 1: {
-                state->page = Options;
-                state->page_selection = 0;
-                return draw_options_screen(state, 0);
-            }
-            case 2: { // HELP
-                state->page = Help;
-                return draw_help_screen(state, 0);
-            }
-            case 3: { // QUIT
-                return 1;
-            }
+    switch (ch) {
+        case -1:
+            return 0;
+        case 'j':
+        case 'J': {
+            if (state->page_selection != 3) {
+                state->page_selection++;
+            } else
+                beep();
+            break;
         }
+        case 'k':
+        case 'K': {
+            if (state->page_selection != 0) {
+                state->page_selection--;
+            } else
+                beep();
+            break;
+        }
+        case KEY_RESIZE:
+            clear();
+            break;
+        case 10:
+        case ' ':
+        case KEY_ENTER: {
+            clear();
+            switch (state->page_selection) {
+                case 0: {
+                    state->page = Game;
+                    state->page_selection = 0;
+                    return draw_game(state, 0);
+                }
+                case 1: {
+                    state->page = Options;
+                    state->page_selection = 0;
+                    return draw_options_screen(state, 0);
+                }
+                case 2: { // HELP
+                    state->page = Help;
+                    return draw_help_screen(state, 0);
+                }
+                case 3: { // QUIT
+                    return 1;
+                }
+            }
+            break;
+        }
+        case 0:
+            break;
+        default:
+            beep();
     }
 
     int vdisplace = 0;
 
     // draw splash screen
-    attron(A_BOLD | COLOR_PAIR(4));
+    attron(A_BOLD | COLOR_PAIR(5));
     if (COLS > 130 && LINES > 18) {
         for (int i = 0; i < 7; i++) {
             const char *this_splash = title_screen_splash[i];
@@ -92,7 +122,7 @@ int draw_title_screen(game_state *state, int ch) {
     // write copyright line @ bottom
     mvprintw(LINES - 1, centerx(title_screen_copyright), title_screen_copyright);
 
-    attroff(COLOR_PAIR(4));
+    attroff(COLOR_PAIR(5));
 
     return 0;
 }

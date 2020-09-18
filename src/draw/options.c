@@ -1,3 +1,16 @@
+/* ncurses-minesweeper Copyright (c) 2020 Joshua 'joshuas3' Stockin
+ * <https://joshstock.in>
+ * <https://github.com/JoshuaS3/lognestmonster>
+ *
+ * This software is licensed and distributed under the terms of the MIT License.
+ * See the MIT License in the LICENSE file of this project's root folder.
+ *
+ * This comment block and its contents, including this disclaimer, MUST be
+ * preserved in all copies or distributions of this software's source.
+ */
+
+// TODO: rewrite this POS
+
 #include <ncurses.h>
 
 #include "../state.h"
@@ -27,7 +40,7 @@ int digit_input(int line, int col) {
         if (in1 >= '0' && in1 <= '9') {
             n = 10 * (in1 - '0');
             break;
-        } else // invalid input, beep
+        } else if (in1 > 0) // invalid input, beep
             beep();
     }
     attroff(A_UNDERLINE);
@@ -40,7 +53,7 @@ int digit_input(int line, int col) {
         if (in2 >= '0' && in2 <= '9') {
             n += in2 - '0';
             break;
-        } else // invalid input, beep
+        } else if (in2 > 0) // invalid input, beep
             beep();
     }
     attroff(A_UNDERLINE);
@@ -49,22 +62,43 @@ int digit_input(int line, int col) {
 }
 
 int draw_options_screen(game_state *state, int ch) {
-    if (ch == 'j' || ch == 'J') {
-        if (state->page_selection < 3)
-            state->page_selection++;
-        else
-            beep();
-    } else if (ch == 'k' || ch == 'K') {
-        if (state->page_selection > 0)
-            state->page_selection--;
-        else
-            beep();
-    } else if (ch == ' ' || ch == 10) {
-        if (state->page_selection == 3) {
-            state->page = Title;
-            state->page_selection = 1;
-            return draw_title_screen(state, 0);
+    switch (ch) {
+        case -1:
+            return 0;
+        case 'j':
+        case 'J': {
+            if (state->page_selection < 3)
+                state->page_selection++;
+            else
+                beep();
+            break;
         }
+        case 'k':
+        case 'K': {
+            if (state->page_selection > 0)
+                state->page_selection--;
+            else
+                beep();
+            break;
+        }
+        case KEY_RESIZE:
+            clear();
+            break;
+        case ' ':
+        case 10:
+        case KEY_ENTER: {
+            if (state->page_selection == 3) {
+                clear();
+                state->page = Title;
+                state->page_selection = 1;
+                return draw_title_screen(state, 0);
+            }
+            break;
+        }
+        case 0:
+            break;
+        default:
+            beep();
     }
 
     int y = centery();
@@ -94,24 +128,44 @@ int draw_options_screen(game_state *state, int ch) {
     mvaddstr(y + 3, centerx(options_screen_back), options_screen_back);
     if (state->page_selection == 3) attroff(A_STANDOUT);
 
-    if (ch == ' ' || ch == 10) {
+    if (ch == ' ' || ch == 10 || ch == KEY_ENTER) {
+        int in = 0;
         switch (state->page_selection) {
             case 0: {
-                state->board->width = digit_input(y - 1, x + 4);
+                while ((in = digit_input(y - 1, x + 4))) {
+                    if (state->board->mine_count < in * state->board->height - 9)
+                        break;
+                    else
+                        beep();
+                }
+                state->board->width = in;
                 attron(A_STANDOUT);
                 mvprintw(y - 1, x + 4, "%02d", state->board->width);
                 attroff(A_STANDOUT);
                 break;
             }
             case 1: {
-                state->board->height = digit_input(y, x + 4);
+                while ((in = digit_input(y, x + 4))) {
+                    if (state->board->mine_count < state->board->width * in - 9)
+                        break;
+                    else
+                        beep();
+                }
+                state->board->height = in;
                 attron(A_STANDOUT);
                 mvprintw(y, x + 4, "%02d", state->board->height);
                 attroff(A_STANDOUT);
                 break;
             }
             case 2: {
-                state->board->mine_count = digit_input(y + 1, x + 4);
+                while ((in = digit_input(y + 1, x + 4))) {
+                    if (in < state->board->width * state->board->height - 9)
+                        break;
+                    else
+                        beep();
+                }
+                state->board->mine_count = in;
+                state->board->mines_left = in;
                 attron(A_STANDOUT);
                 mvprintw(y + 1, x + 4, "%02d", state->board->mine_count);
                 attroff(A_STANDOUT);

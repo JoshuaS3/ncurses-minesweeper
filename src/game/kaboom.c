@@ -9,18 +9,11 @@
  * preserved in all copies or distributions of this software's source.
  */
 
-#include <ncurses.h>
+#include "../state.h"
 
-int init_colorpairs(void) {
-    use_default_colors();
-    start_color();
-    init_pair(1, COLOR_BLUE, -1);
-    init_pair(2, COLOR_GREEN, -1);
-    init_pair(3, COLOR_RED, -1);
-    init_pair(4, COLOR_MAGENTA, -1);
-    init_pair(5, COLOR_RED, -1);
-    init_pair(6, COLOR_CYAN, -1);
-    init_pair(7, COLOR_WHITE, -1);
-    init_pair(8, COLOR_MAGENTA, -1);
-    return 0;
+void kaboom(game_board *board) {
+    board->status = Kaboom;
+    for (int i = 0; i < board->width * board->height; i++) {
+        if (board->cells[i].is_bomb) board->cells[i].opened = 1;
+    }
 }

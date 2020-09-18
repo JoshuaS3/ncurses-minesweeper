@@ -1,10 +1,22 @@
+/* ncurses-minesweeper Copyright (c) 2020 Joshua 'joshuas3' Stockin
+ * <https://joshstock.in>
+ * <https://github.com/JoshuaS3/lognestmonster>
+ *
+ * This software is licensed and distributed under the terms of the MIT License.
+ * See the MIT License in the LICENSE file of this project's root folder.
+ *
+ * This comment block and its contents, including this disclaimer, MUST be
+ * preserved in all copies or distributions of this software's source.
+ */
+
 #ifndef STATE_H
 #define STATE_H
 
-#include "stdint.h"
+#include <stdint.h>
+#include <time.h>
 
 typedef enum DrawPage { Title, Game, Options, Help } DrawPage;
-typedef enum GameStatus { Playing, Done, Kaboom } GameStatus;
+typedef enum GameStatus { Waiting, Playing, Done, Kaboom } GameStatus;
 
 typedef struct game_board_cell {
     uint8_t is_bomb : 1;
@@ -19,6 +31,7 @@ typedef struct game_board {
     uint16_t current_cell; // (x,y) | x = current_cell % width, y = current_cell / width
     uint8_t mine_count;
     uint8_t mines_left;
+    time_t time;
     GameStatus status;
     game_board_cell *cells; // heap allocated, size = width * height, position in array determines position on board
 } game_board;

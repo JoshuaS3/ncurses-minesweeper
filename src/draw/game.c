@@ -1,69 +1,119 @@
+/* ncurses-minesweeper Copyright (c) 2020 Joshua 'joshuas3' Stockin
+ * <https://joshstock.in>
+ * <https://github.com/JoshuaS3/lognestmonster>
+ *
+ * This software is licensed and distributed under the terms of the MIT License.
+ * See the MIT License in the LICENSE file of this project's root folder.
+ *
+ * This comment block and its contents, including this disclaimer, MUST be
+ * preserved in all copies or distributions of this software's source.
+ */
+
 #include <ncurses.h>
+#include <time.h>
 
 #include "../game/game.h"
+#include "../game/reset.h"
 #include "../state.h"
 #include "pages.h"
 #include "text.h"
 
-int draw_game(game_state *state, int ch) {
-    if (ch == 'q' || ch == 'Q') {
-        state->board->status = Playing;
-        state->page = Title;
-        state->page_selection = 0;
-        return draw_title_screen(state, 0);
-    } else if (ch == 'r' || ch == 'R')
-        ch = 0;
-    game(state, ch);
-    game_board *board = state->board;
-    mvprintw(0, 20, "MINES LEFT: %d", board->mines_left);
+void render_topbar(int left, int right, game_board *board) {
+    if (board->status == Waiting) {
+        mvaddstr(0, right - 4, "000");
+        mvprintw(0, left, "%03d", board->mines_left);
+    } else if (board->status != Kaboom && board->status != Done) {
+        attron(A_BOLD);
+        time_t diff = time(NULL) - board->time;
+        if (diff < 999)
+            mvprintw(0, right - 4, "%03d", time(NULL) - board->time);
+        else
+            mvaddstr(0, right - 4, "999");
+        mvprintw(0, left, "%03d", board->mines_left);
+        attroff(A_BOLD);
+    }
+    int center = (int)(COLS / 2 - 1);
     switch (board->status) {
+        case Waiting:
         case Playing:
-            mvaddstr(0, centerx("o_o"), "o_o");
+            mvaddstr(0, center, "._.");
             break;
         case Done:
-            mvaddstr(0, centerx("^_^"), "^_^");
+            mvaddstr(0, center, "^-^");
             break;
         case Kaboom:
-            mvaddstr(0, centerx("x_x"), "x_x");
+            mvaddstr(0, center, "x_x");
             break;
     }
+}
+
+int draw_game(game_state *state, int ch) {
+    game_board *board = state->board;
+    int bound_left = (int)(COLS / 2) - board->width;
+    int bound_right = (int)(COLS / 2) + board->width;
+    render_topbar(bound_left, bound_right, board);
+
+    // handle input
+    switch (ch) {
+        case -1: {
+            return 0;
+        }
+        case KEY_RESIZE:
+            clear();
+            break;
+        case 'q':
+        case 'Q': {
+            clear();
+            reset_board(state->board);
+            state->page = Title;
+            state->page_selection = 0;
+            return draw_title_screen(state, 0);
+        }
+    }
+
+    game(state, ch); // pass input to game controller
+
+    // draw board
     attron(A_BOLD);
     for (int cell = 0; cell < board->width * board->height; cell++) {
-        if (board->current_cell == cell) attron(A_STANDOUT);
-        int x = (int)(COLS / 2) - board->width + cell % board->width * 2;
+        int x = bound_left + cell % board->width * 2;
         int y = 1 + cell / board->width;
-        if (board->current_cell == cell) attron(A_STANDOUT);
-        if (board->cells[cell].flagged) {
-            if (board->status == Playing)
-                mvaddch(y, x, 'F');
-            else {
-                if (!board->cells[cell].is_bomb) {
-                    attron(A_STANDOUT | COLOR_PAIR(5));
-                    mvaddch(y, x, 'F');
-                    attroff(A_STANDOUT | COLOR_PAIR(5));
-                } else
-                    mvaddch(y, x, 'F');
-            }
-        } else {
-            if (board->cells[cell].opened) {
-                if (board->cells[cell].is_bomb) {
-                    attron(A_BOLD | COLOR_PAIR(5));
-                    mvaddch(y, x, 'X');
-                    attroff(A_BOLD | COLOR_PAIR(5));
-                } else if (board->cells[cell].surrounding_bomb_count) {
-                    attron(COLOR_PAIR(board->cells[cell].surrounding_bomb_count));
-                    mvaddch(y, x, '0' + board->cells[cell].surrounding_bomb_count);
-                    attroff(COLOR_PAIR(board->cells[cell].surrounding_bomb_count));
-                } else {
-                    mvaddch(y, x, ' ');
-                }
-            } else {
+        if (board->current_cell == cell) attron(A_STANDOUT); // highlight selected cell
+        game_board_cell *this_cell = &board->cells[cell];
+        if (!this_cell->flagged) {
+            if (!this_cell->opened) { // unopened unflagged, grey territory
                 attroff(A_BOLD);
                 mvaddch(y, x, '~');
                 attron(A_BOLD);
+            } else {                      // opened but unflagged
+                if (this_cell->is_bomb) { // bomb opened
+                    attron(COLOR_PAIR(5));
+                    mvaddch(y, x, 'X');
+                    attroff(COLOR_PAIR(5));
+                } else if (this_cell->surrounding_bomb_count) { // surrounding bomb-count label
+                    int count = this_cell->surrounding_bomb_count;
+                    attron(COLOR_PAIR(count));
+                    mvaddch(y, x, '0' + count);
+                    attroff(COLOR_PAIR(count));
+                } else { // no surrounding bombs, open area
+                    mvaddch(y, x, ' ');
+                }
             }
+        } else { // flagged cell
+            attron(A_STANDOUT);
+            if (board->status != Kaboom)
+                mvaddch(y, x, 'X');
+            else {
+                if (!board->cells[cell].is_bomb) { // highlight false positives when done
+                    attron(COLOR_PAIR(5));
+                    mvaddch(y, x, 'X');
+                    attroff(COLOR_PAIR(5));
+                } else
+                    mvaddch(y, x, 'X');
+            }
+            attroff(A_STANDOUT);
         }
-        if (board->current_cell == cell) attroff(A_STANDOUT);
+        if (board->current_cell == cell) attroff(A_STANDOUT); // un-highlight selected cell
     }
     attroff(A_BOLD);
     return 0;

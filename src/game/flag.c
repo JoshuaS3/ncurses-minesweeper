@@ -11,16 +11,15 @@
 
 #include <ncurses.h>
 
-int init_colorpairs(void) {
-    use_default_colors();
-    start_color();
-    init_pair(1, COLOR_BLUE, -1);
-    init_pair(2, COLOR_GREEN, -1);
-    init_pair(3, COLOR_RED, -1);
-    init_pair(4, COLOR_MAGENTA, -1);
-    init_pair(5, COLOR_RED, -1);
-    init_pair(6, COLOR_CYAN, -1);
-    init_pair(7, COLOR_WHITE, -1);
-    init_pair(8, COLOR_MAGENTA, -1);
-    return 0;
+#include "../state.h"
+
+void flag_current_cell(game_board *board) {
+    if (board->status == Playing && board->mines_left > 0) {
+        game_board_cell *cell = &board->cells[board->current_cell];
+        if (!cell->opened) {
+            board->mines_left += cell->flagged * 2 - 1;
+            cell->flagged = !cell->flagged;
+        }
+    } else
+        beep();
 }
