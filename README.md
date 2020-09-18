@@ -21,9 +21,9 @@ dropped in and linked on Windows, although this hasn't been tested.
 
 Requirements: `coreutils libncurses-dev clang-format clang-tidy`
 
-Linting, compiling and linking:
+Compiling and linking:
 ```
-make
+make compile build
 ```
 
 Binary executable deposited at `bin/minesweeper`.
