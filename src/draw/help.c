@@ -17,14 +17,15 @@
 
 const char *help_screen_title = "HELP";
 
-const char *help_screen_info[10] = {"Minesweeper is a logic game where mines are hidden in a grid of     ",
+const char *help_screen_info[11] = {"Minesweeper is a logic game where mines are hidden in a grid of     ",
                                     "squares. The object is to open all the safe squares in the shortest",
                                     "time possible.",
                                     "",
                                     "Use the <ENTER> key or the spacebar to select menu items or open",
                                     "unopened squares. Use <hjkl> to move around. Use <f> to toggle flags",
-                                    "on squares. Use <g> on a numbered square if enough surrounding",
+                                    "on squares. Use <SPACE> on a numbered square if enough surrounding",
                                     "squares are flagged in order to open remaining surrounding squares.",
+                                    "Use <r> to reset the board and <q> to quit.",
                                     "",
                                     "A minimum terminal resolution of 80x20 is recommended."};
 
@@ -61,7 +62,7 @@ int draw_help_screen(game_state *state, int ch) {
 
     int x = centerx(help_screen_info[0]);
     int y = mid - 5;
-    for (int i = 0; i < 10; i++) mvaddstr(y++, x, help_screen_info[i]);
+    for (int i = 0; i < 11; i++) mvaddstr(y++, x, help_screen_info[i]);
 
     attron(A_STANDOUT);
     mvaddstr(mid + 7, centerx(help_screen_back), help_screen_back);
