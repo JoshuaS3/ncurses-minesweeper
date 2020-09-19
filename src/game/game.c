@@ -24,6 +24,7 @@
 void game(game_state *state, int ch) {
     game_board *board = state->board;
     switch (ch) {
+        case 0:
         case 'r':
         case 'R': {
             reset_board(board);

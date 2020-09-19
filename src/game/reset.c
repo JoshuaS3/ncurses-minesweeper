@@ -18,6 +18,8 @@ void reset_board(game_board *board) {
     board->status = Waiting;
     board->mines_left = board->mine_count;
     board->time = time(NULL);
+    if (board->cells != NULL) free(board->cells);
+    board->cells = calloc(board->width * board->height, sizeof(game_board_cell));
     for (int i = 0; i < board->width * board->height; i++) {
         game_board_cell *cell = &board->cells[i];
         cell->is_bomb = 0;

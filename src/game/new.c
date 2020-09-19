@@ -33,7 +33,7 @@ void begin_game(game_board *board) {
     srand(time(NULL));
 
     while (mines_generated < board->mine_count) {
-        int n = rand() % (end - 1);
+        int n = rand() % end;
         game_board_cell *x = &board->cells[n];
         if (!x->is_bomb && !x->opened) {
             x->is_bomb = 1;

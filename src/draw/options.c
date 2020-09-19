@@ -133,7 +133,7 @@ int draw_options_screen(game_state *state, int ch) {
         switch (state->page_selection) {
             case 0: {
                 while ((in = digit_input(y - 1, x + 4))) {
-                    if (state->board->mine_count < in * state->board->height - 9)
+                    if (state->board->mine_count < in * state->board->height - 8)
                         break;
                     else
                         beep();
@@ -146,7 +146,7 @@ int draw_options_screen(game_state *state, int ch) {
             }
             case 1: {
                 while ((in = digit_input(y, x + 4))) {
-                    if (state->board->mine_count < state->board->width * in - 9)
+                    if (state->board->mine_count < state->board->width * in - 8)
                         break;
                     else
                         beep();
@@ -159,7 +159,7 @@ int draw_options_screen(game_state *state, int ch) {
             }
             case 2: {
                 while ((in = digit_input(y + 1, x + 4))) {
-                    if (in < state->board->width * state->board->height - 9)
+                    if (in < state->board->width * state->board->height - 8)
                         break;
                     else
                         beep();
