@@ -10,9 +10,9 @@
  */
 
 #include <stdlib.h>
-#include <time.h>
 
 #include "../state.h"
+#include "../time.h"
 #include "nearest_cells.h"
 
 void begin_game(game_board *board) {
@@ -30,7 +30,7 @@ void begin_game(game_board *board) {
     int mines_generated = 0;
     uint16_t end = board->width * board->height;
 
-    srand(time(NULL));
+    srand(time_us());
 
     while (mines_generated < board->mine_count) {
         int n = rand() % end;
@@ -60,7 +60,7 @@ void begin_game(game_board *board) {
     free(open_start_cells);
 
     // start timer
-    board->time = time(NULL);
+    board->time = time_us();
 
     board->status = Playing;
 }

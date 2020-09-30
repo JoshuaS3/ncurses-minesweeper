@@ -31,7 +31,7 @@ typedef struct game_board {
     uint16_t current_cell; // (x,y) | x = current_cell % width, y = current_cell / width
     uint8_t mine_count;
     uint8_t mines_left;
-    time_t time;
+    uint64_t time;
     GameStatus status;
     game_board_cell *cells; // heap allocated, size = width * height, position in array determines position on board
 } game_board;

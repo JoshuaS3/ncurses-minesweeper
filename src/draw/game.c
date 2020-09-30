@@ -10,11 +10,11 @@
  */
 
 #include <ncurses.h>
-#include <time.h>
 
 #include "../game/game.h"
 #include "../game/reset.h"
 #include "../state.h"
+#include "../time.h"
 #include "pages.h"
 #include "text.h"
 
@@ -23,7 +23,7 @@ void render_topbar(int left, int right, game_board *board) {
     if (board->status == Waiting) {
         elapsed = 0;
     } else if (board->status == Playing) {
-        elapsed = time(NULL) - board->time;
+        elapsed = 1 + (time_us() - board->time) / 1000000;
     }
     attron(A_BOLD);
     if (elapsed < 999)
