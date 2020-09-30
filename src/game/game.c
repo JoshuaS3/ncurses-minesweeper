@@ -30,23 +30,19 @@ void game(game_state *state, int ch) {
             reset_board(board);
             break;
         }
-        case 'j':
-        case 'J': {
+        case KEY_DOWN: {
             constrain_down(board);
             break;
         }
-        case 'k':
-        case 'K': {
+        case KEY_UP: {
             constrain_up(board);
             break;
         }
-        case 'h':
-        case 'H': {
+        case KEY_LEFT: {
             constrain_left(board);
             break;
         }
-        case 'l':
-        case 'L': {
+        case KEY_RIGHT: {
             constrain_right(board);
             break;
         }

@@ -58,9 +58,10 @@ int draw_game(game_state *state, int ch) {
         case -1: {
             return 0;
         }
-        case KEY_RESIZE:
+        case KEY_RESIZE: {
             clear();
             break;
+        }
         case 'q':
         case 'Q': {
             clear();

@@ -16,6 +16,13 @@
 
 int draw(game_state *state, int ch) {
     int ret = 0;
+
+    // Map input
+    if (ch == 'h' || ch == 'H') ch = KEY_LEFT;
+    if (ch == 'j' || ch == 'J') ch = KEY_DOWN;
+    if (ch == 'k' || ch == 'K') ch = KEY_UP;
+    if (ch == 'l' || ch == 'L') ch = KEY_RIGHT;
+
     switch (state->page) {
         case Title: {
             ret = draw_title_screen(state, ch);

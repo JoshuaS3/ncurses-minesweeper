@@ -41,6 +41,7 @@ int main(void) {
     timeout(0);
     noecho();
     cbreak();
+    keypad(stdscr, TRUE);
 
     if (!has_colors()) {
         printf("Your terminal doesn't support color.\n");

@@ -65,16 +65,14 @@ int draw_options_screen(game_state *state, int ch) {
     switch (ch) {
         case -1:
             return 0;
-        case 'j':
-        case 'J': {
+        case KEY_DOWN: {
             if (state->page_selection < 3)
                 state->page_selection++;
             else
                 beep();
             break;
         }
-        case 'k':
-        case 'K': {
+        case KEY_UP: {
             if (state->page_selection > 0)
                 state->page_selection--;
             else
