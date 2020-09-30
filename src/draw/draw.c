@@ -44,8 +44,11 @@ int draw(game_state *state, int ch) {
             return 1;
     }
 
-    if (ch != -1) mvprintw(LINES - 1, 0, "%04i", ch);        // print most recent character press
+    if (ch != -1) mvprintw(LINES - 1, 0, "%04i", ch); // print most recent character press
+
+    if (LINES < 20 || COLS < 80) attron(COLOR_PAIR(3));
     mvprintw(LINES - 1, COLS - 7, "%03ix%03i", COLS, LINES); // print screen resolution
+    if (LINES < 20 || COLS < 80) attroff(COLOR_PAIR(3));
 
     refresh();
     return ret;
