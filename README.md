@@ -4,7 +4,7 @@ Terminal game of Minesweeper, implemented in C with ncurses.
 
 Minesweeper is a logic game where mines are hidden in a grid of squares. The
 object is to open all the safe squares in the shortest time possible. Use
-\<hjkl\> to move and \<SPACE\> to select. Read the Help page for more
+the arrow keys to move and \<SPACE\> to select. Read the Help page for more
 information.
 
 Click to watch a video demo on YouTube:
@@ -22,10 +22,12 @@ Compiling and linking:
 make compile build
 ```
 
-**Binary executable deposited at `bin/minesweeper`.**
+**Binary executable deposited at `bin/minesweeper`.** You can copy this to
+`/usr/bin/minesweeper` to run the game as `minesweeper` from any location in
+Bash.
 
-**If you're contributing source code to this repository, install `clang-format
-clang-tidy` and use `make` to target the linter programs.** (`clang-format` is
+If you're contributing source code to this repository, install `clang-format
+clang-tidy` and use `make` to target the linter programs. (`clang-format` is
 a bit finicky; make sure you're running version 10.0.0, or it will yell at you
 about unsupported configuration in `.clang-format`.)
 
@@ -41,9 +43,7 @@ All header files correspond to a similarly named source file except
 
 ## TODO
 
-* Rewrite Help screen message
 * Rewrite Options screen controls
-* Use millisecond/microsecond precision for stopwatch
 * Rewrite game management logic (memory handling, mine count setting)
 
 ## Copyright and Licensing
