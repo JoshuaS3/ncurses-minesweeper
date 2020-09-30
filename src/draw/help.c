@@ -17,15 +17,17 @@
 
 const char *help_screen_title = "HELP";
 
-const char *help_screen_info[11] = {"Minesweeper is a logic game where mines are hidden in a grid of     ",
+const char *help_screen_info[13] = {"Minesweeper is a logic game where mines are hidden in a grid of     ",
                                     "squares. The object is to open all the safe squares in the shortest",
                                     "time possible.",
                                     "",
-                                    "Use the <ENTER> key or the spacebar to select menu items or open",
-                                    "unopened squares. Use <hjkl> to move around. Use <f> to toggle flags",
-                                    "on squares. Use <SPACE> on a numbered square if enough surrounding",
-                                    "squares are flagged in order to open remaining surrounding squares.",
-                                    "Use <r> to reset the board and <q> to quit.",
+                                    "Use the <ENTER> key or <SPACE> to select menu items or open unopened",
+                                    "squares. Use the arrow keys or <hjkl> to move around. Use <f> to",
+                                    "toggle flags on squares. Use <ENTER> or <SPACE> on a numbered square",
+                                    "if enough surrounding squares are flagged in order to open remaining",
+                                    "surrounding squares. Use <r> to reset the board and <q> to quit.",
+                                    "",
+                                    "See the [OPTIONS] screen to change game settings.",
                                     "",
                                     "A minimum terminal resolution of 80x20 is recommended."};
 
@@ -57,15 +59,15 @@ int draw_help_screen(game_state *state, int ch) {
     int mid = centery();
 
     attron(A_BOLD | COLOR_PAIR(2));
-    mvaddstr(mid - 7, centerx(help_screen_title), help_screen_title);
+    mvaddstr(mid - 8, centerx(help_screen_title), help_screen_title);
     attroff(A_BOLD);
 
     int x = centerx(help_screen_info[0]);
-    int y = mid - 5;
-    for (int i = 0; i < 11; i++) mvaddstr(y++, x, help_screen_info[i]);
+    int y = mid - 6;
+    for (int i = 0; i < 13; i++) mvaddstr(y++, x, help_screen_info[i]);
 
     attron(A_STANDOUT);
-    mvaddstr(mid + 7, centerx(help_screen_back), help_screen_back);
+    mvaddstr(mid + 8, centerx(help_screen_back), help_screen_back);
     attroff(A_STANDOUT | COLOR_PAIR(2));
 
     return 0;
