@@ -60,4 +60,4 @@ ncurses-minesweeper Copyright (c) 2020 Joshua 'joshuas3' Stockin
 This software is licensed under the MIT License.
 ```
 
-<<https://joshstock.in>> | josh@joshstock.in | joshuas3#9641
+&lt;<https://joshstock.in>&gt; | josh@joshstock.in | joshuas3#9641
