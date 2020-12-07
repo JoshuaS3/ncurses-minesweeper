@@ -4,16 +4,17 @@ Terminal game of Minesweeper, implemented in C with ncurses.
 
 Minesweeper is a logic game where mines are hidden in a grid of squares. The
 object is to open all the safe squares in the shortest time possible. Use
-the arrow keys to move and \<SPACE\> to select. Read the Help page for more
+the arrow keys to move and &lt;SPACE&gt; to select. Read the Help page for more
 information.
 
 Click to watch a video demo on YouTube:
 [![Minesweeper demo](http://img.youtube.com/vi/g7InqPoMShA/maxresdefault.jpg)](http://www.youtube.com/watch?v=g7InqPoMShA "Minesweeper demo")
 
-## Building
+## Compiling and Linking
 
-Currently functional on all systems with an ncurses library. PDCurses may be
-dropped in and linked on Windows, although this hasn't been tested.
+Should be functional on all systems with an ncurses library and `sys/time.h`
+header. PDCurses may be dropped in and linked on Windows, although this hasn't
+been tested. Might work on WSL or Cygwin.
 
 Requirements: `build-essential libncurses-dev`
 
@@ -23,8 +24,8 @@ make compile build
 ```
 
 **Binary executable deposited at `bin/minesweeper`.** You can copy this to
-`/usr/bin/minesweeper` to run the game as `minesweeper` from any location in
-Bash.
+`/usr/local/bin/minesweeper` to run the game as `minesweeper` from any location
+in your shell (given `/usr/local/bin` is in your path).
 
 If you're contributing source code to this repository, install `clang-format
 clang-tidy` and use `make` to target the linter programs. (`clang-format` is
@@ -34,17 +35,19 @@ about unsupported configuration in `.clang-format`.)
 ## Program structure
 
 * Entry point at `src/main.c`
+* State structs at `src/state.h`
 * Rendering logic loop at `src/draw/draw.c`
-* Game logic handler at `src/game/game.c`
+* Game logic handler (input) at `src/game/game.c`
 * Game renderer at `src/draw/game.c`
 
 All header files correspond to a similarly named source file except
-`src/draw/pages.h` which encapsulates multiple sources in the same directory.
+`src/draw/pages.h`, which encapsulates multiple sources in the same directory,
+and `src/state.h`, which provides struct definitions for game state data.
 
 ## TODO
 
 * Rewrite Options screen controls
-* Rewrite game management logic (memory handling, mine count setting)
+* Rewrite game board renderer
 
 ## Copyright and Licensing
 
