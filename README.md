@@ -12,9 +12,9 @@ Click to watch a video demo on YouTube:
 
 ## Compiling and Linking
 
-Should be functional on all systems with an ncurses library and `sys/time.h`
-header. PDCurses may be dropped in and linked on Windows, although this hasn't
-been tested. Might work on WSL or Cygwin.
+Should be functional on all systems with an ncurses library. PDCurses may be
+dropped in and linked on Windows, although this hasn't been tested. Might work
+on WSL or Cygwin.
 
 Requirements: `build-essential libncurses-dev`
 
@@ -29,8 +29,8 @@ in your shell (given `/usr/local/bin` is in your path).
 
 If you're contributing source code to this repository, install `clang-format
 clang-tidy` and use `make` to target the linter programs. (`clang-format` is
-a bit finicky; make sure you're running version 10.0.0, or it will yell at you
-about unsupported configuration in `.clang-format`.)
+a bit finicky; make sure you're running version 10.0.0 at least, or it will
+yell at you about unsupported configuration in `.clang-format`.)
 
 ## Program structure
 
@@ -60,7 +60,12 @@ A form of the following should be present in each source or header file.
 ncurses-minesweeper Copyright (c) 2020 Joshua 'joshuas3' Stockin
 <https://joshstock.in>
 <https://github.com/JoshuaS3/ncurses-minesweeper>
-This software is licensed under the MIT License.
+
+This software is licensed and distributed under the terms of the MIT License.
+See the MIT License in the LICENSE file of this project's root folder.
+
+This comment block and its contents, including this disclaimer, MUST be
+preserved in all copies or distributions of this software's source.
 ```
 
 &lt;<https://joshstock.in>&gt; | josh@joshstock.in | joshuas3#9641
