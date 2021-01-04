@@ -64,8 +64,7 @@ void recursively_open_nearby_cells(game_board *board, uint16_t cell) {
                 recursively_open_nearby_cells(board, c);
             else if (x->is_bomb) {
                 kaboom(board);
-                free(nearby);
-                return;
+                break;
             }
         }
     }
