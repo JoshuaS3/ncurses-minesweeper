@@ -14,10 +14,11 @@
 #include "../state.h"
 
 void flag_current_cell(game_board *board) {
-    if (board->status == Playing && board->mines_left > 0) {
-        game_board_cell *cell = &board->cells[board->current_cell];
-        if (!cell->opened) {
-            board->mines_left += cell->flagged * 2 - 1;
+    game_board_cell *cell = &board->cells[board->current_cell];
+    int delta = cell->flagged * 2 - 1;
+    if (!cell->opened) {
+        if (board->status == Playing && (board->mines_left + delta) >= 0) {
+            board->mines_left += delta;
             cell->flagged = !cell->flagged;
         }
     } else
