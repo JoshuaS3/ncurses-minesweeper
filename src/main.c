@@ -21,7 +21,7 @@
 int main(void) {
     printf("ncurses-minesweeper Copyright (c) Joshua 'joshuas3' Stockin 2020\n");
     printf("<https://joshstock.in>\n");
-    printf("<https://github.com/JoshuaS3/ncurses-minesweeper>\n");
+    printf("<https://git.joshstock.in/ncurses-minesweeper>\n");
 
     game_state *state = calloc(1, sizeof(game_state));
     state->page = Title;
@@ -38,7 +38,7 @@ int main(void) {
     reset_board(board);
 
     initscr();
-    timeout(0);
+    timeout(30);
     noecho();
     cbreak();
     keypad(stdscr, TRUE);
