@@ -1,4 +1,4 @@
-/* ncurses-minesweeper Copyright (c) 2020 Joshua 'joshuas3' Stockin
+/* ncurses-minesweeper Copyright (c) 2021 Joshua 'joshuas3' Stockin
  * <https://joshstock.in>
  * <https://github.com/JoshuaS3/ncurses-minesweeper>
  *
