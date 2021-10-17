@@ -18,5 +18,6 @@ int draw_title_screen(game_state *state, int ch);
 int draw_game(game_state *state, int ch);
 int draw_options_screen(game_state *state, int ch);
 int draw_help_screen(game_state *state, int ch);
+int draw_about_screen(game_state *state, int ch);
 
 #endif

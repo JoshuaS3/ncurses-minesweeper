@@ -12,6 +12,7 @@
 #include <ncurses.h>
 
 #include "../state.h"
+#include "../strings.h"
 #include "pages.h"
 
 int draw(game_state *state, int ch) {
@@ -22,6 +23,8 @@ int draw(game_state *state, int ch) {
     if (ch == 'j' || ch == 'J') ch = KEY_DOWN;
     if (ch == 'k' || ch == 'K') ch = KEY_UP;
     if (ch == 'l' || ch == 'L') ch = KEY_RIGHT;
+    if (ch == 'q' || ch == 'Q') ch = 27;
+    if (ch == 10 || ch == ' ')  ch = KEY_ENTER;
 
     switch (state->page) {
         case Title: {
@@ -40,15 +43,19 @@ int draw(game_state *state, int ch) {
             ret = draw_help_screen(state, ch);
             break;
         }
+        case About: {
+            ret = draw_about_screen(state, ch);
+            break;
+        }
         default:
             return 1;
     }
 
     if (ch != -1) mvprintw(LINES - 1, 0, "%04i", ch); // print most recent character press
 
-    if (LINES < 20 || COLS < 80) attron(COLOR_PAIR(3));
-    mvprintw(LINES - 1, COLS - 7, "%03ix%03i", COLS, LINES); // print screen resolution
-    if (LINES < 20 || COLS < 80) attroff(COLOR_PAIR(3));
+    if (LINES < (state->board->height + 1) || LINES < 17 || COLS/2 < (state->board->width) || COLS < 20) attron(COLOR_PAIR(3));
+    mvprintw(LINES - 1, COLS - 6, "%03ix%02i", COLS/2, LINES); // print screen resolution
+    if (LINES < (state->board->height + 1) || LINES < 17 || COLS/2 < (state->board->width) || COLS < 20) attroff(COLOR_PAIR(3));
 
     refresh();
     return ret;

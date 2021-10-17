@@ -12,36 +12,16 @@
 #include <ncurses.h>
 
 #include "../state.h"
+#include "../strings.h"
 #include "pages.h"
 #include "text.h"
-
-// clang-format off
-const char *title_screen_splash[7] = {
-    "::::    ::::  ::::::::::: ::::    ::: :::::::::: ::::::::  :::       ::: :::::::::: :::::::::: :::::::::  :::::::::: ::::::::: ",
-    "+:+:+: :+:+:+     :+:     :+:+:   :+: :+:       :+:    :+: :+:       :+: :+:        :+:        :+:    :+: :+:        :+:    :+:",
-    "+:+ +:+:+ +:+     +:+     :+:+:+  +:+ +:+       +:+        +:+       +:+ +:+        +:+        +:+    +:+ +:+        +:+    +:+",
-    "+#+  +:+  +#+     +#+     +#+ +:+ +#+ +#++:++#  +#++:++#++ +#+  +:+  +#+ +#++:++#   +#++:++#   +#++:++#+  +#++:++#   +#++:++#: ",
-    "+#+       +#+     +#+     +#+  +#+#+# +#+              +#+ +#+ +#+#+ +#+ +#+        +#+        +#+        +#+        +#+    +#+",
-    "#+#       #+#     #+#     #+#   #+#+# #+#       #+#    #+#  #+#+# #+#+#  #+#        #+#        #+#        #+#        #+#    #+#",
-    "###       ### ########### ###    #### ########## ########    ###   ###   ########## ########## ###        ########## ###    ###"};
-const char *title_screen_splash_small[5] = {
-    "    __  ___ ____ _   __ ______ _____ _       __ ______ ______ ____   ______ ____ ",
-    "   /  |/  //  _// | / // ____// ___/| |     / // ____// ____// __ \\ / ____// __ \\",
-    "  / /|_/ / / / /  |/ // __/   \\__ \\ | | /| / // __/  / __/  / /_/ // __/  / /_/ /",
-    " / /  / /_/ / / /|  // /___  ___/ / | |/ |/ // /___ / /___ / ____// /___ / _, _/ ",
-    "/_/  /_//___//_/ |_//_____/ /____/  |__/|__//_____//_____//_/    /_____//_/ |_|  "};
-// clang-format on
-
-const char *title_screen_splash_text = "MINESWEEPER";
-const char *title_screen_buttons[4] = {"PLAY", "OPTIONS", "HELP", "EXIT"};
-const char *title_screen_copyright = "Copyright (c) Joshua 'joshuas3' Stockin 2020";
 
 int draw_title_screen(game_state *state, int ch) {
     switch (ch) {
         case -1:
             return 0;
         case KEY_DOWN: {
-            if (state->page_selection != 3) {
+            if (state->page_selection != 4) {
                 state->page_selection++;
             } else
                 beep();
@@ -72,16 +52,22 @@ int draw_title_screen(game_state *state, int ch) {
                     state->page_selection = 0;
                     return draw_options_screen(state, 0);
                 }
-                case 2: { // HELP
+                case 2: {
                     state->page = Help;
                     return draw_help_screen(state, 0);
                 }
-                case 3: { // QUIT
+                case 3: {
+                    state->page = About;
+                    return draw_about_screen(state, 0);
+                }
+                case 4: { // QUIT
                     return 1;
                 }
             }
             break;
         }
+        case 27:
+            return 1;
         case 0:
             break;
         default:
@@ -110,7 +96,7 @@ int draw_title_screen(game_state *state, int ch) {
     }
 
     // draw button inputs
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         if (state->page_selection == i) attron(A_STANDOUT);
         mvprintw(centery() + i + vdisplace, centerx(title_screen_buttons[i]), title_screen_buttons[i]);
         if (state->page_selection == i) attroff(A_STANDOUT);
@@ -118,7 +104,7 @@ int draw_title_screen(game_state *state, int ch) {
     attroff(A_BOLD);
 
     // write copyright line @ bottom
-    mvprintw(LINES - 1, centerx(title_screen_copyright), title_screen_copyright);
+    mvprintw(LINES - 1, centerx(copyright_line), copyright_line);
 
     attroff(COLOR_PAIR(5));
 

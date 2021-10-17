@@ -15,7 +15,7 @@
 #include <stdint.h>
 #include <time.h>
 
-typedef enum DrawPage { Title, Game, Options, Help } DrawPage;
+typedef enum DrawPage { Title, Game, Options, Help, About } DrawPage;
 typedef enum GameStatus { Waiting, Playing, Done, Kaboom } GameStatus;
 
 typedef struct game_board_cell {

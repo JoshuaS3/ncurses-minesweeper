@@ -51,8 +51,7 @@ void game(game_state *state, int ch) {
             flag_current_cell(board);
             break;
         }
-        case 10:
-        case ' ': {
+        case KEY_ENTER: {
             open_cell(board);
             check_done(board);
             break;

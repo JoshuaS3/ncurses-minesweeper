@@ -14,7 +14,7 @@
 
 int centerx(const char* txt) { // try to return the best X value to center string txt in view
     size_t ln = strlen(txt);
-    int x = (int)(COLS / 2 - ln / 2);
+    int x = (int)(COLS / 2) - (int)(ln / 2);
     if (x > 0)
         return x;
     else

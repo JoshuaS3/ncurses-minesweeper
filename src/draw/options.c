@@ -14,16 +14,9 @@
 #include <ncurses.h>
 
 #include "../state.h"
+#include "../strings.h"
 #include "pages.h"
 #include "text.h"
-
-const char *options_screen_title = "OPTIONS";
-
-const char *options_screen_width = " Board width:";
-const char *options_screen_height = "Board height:";
-const char *options_screen_minecount = "  # of Mines:";
-
-const char *options_screen_back = "Back";
 
 int digit_input(int line, int col) {
     // input of two digits for int

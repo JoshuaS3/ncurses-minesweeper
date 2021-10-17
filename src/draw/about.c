@@ -16,7 +16,7 @@
 #include "pages.h"
 #include "text.h"
 
-int draw_help_screen(game_state *state, int ch) {
+int draw_about_screen(game_state *state, int ch) {
     // input handling
     switch (ch) {
         case -1:
@@ -24,8 +24,6 @@ int draw_help_screen(game_state *state, int ch) {
         case KEY_RESIZE:
             clear();
             break;
-        case 10:
-        case ' ':
         case KEY_ENTER: {
             clear();
             state->page = Title;
@@ -39,19 +37,19 @@ int draw_help_screen(game_state *state, int ch) {
     }
 
     // draw help screen
-    int top = centery() - (HELP_SCREEN_INFO_LEN / 2) - 3;
+    int top = centery() - 3;
     if (top < 0) top = 0;
 
     attron(A_BOLD | COLOR_PAIR(2));
-    mvaddstr(top, centerx(help_screen_title), help_screen_title);
+    mvaddstr(top, centerx(about_screen_title), about_screen_title);
     attroff(A_BOLD);
 
-    int x = centerx(help_screen_info[0]);
-    int y = top + 2;
-    for (int i = 0; i < HELP_SCREEN_INFO_LEN; i++) mvaddstr(y++, x, help_screen_info[i]);
+    mvaddstr(top + 2, centerx(copyright_line), copyright_line);
+    mvaddstr(top + 3, centerx(about_website_source), about_website_source);
+    mvaddstr(top + 4, centerx(about_website_home), about_website_home);
 
     attron(A_STANDOUT);
-    mvaddstr(top + 3 + HELP_SCREEN_INFO_LEN, centerx(help_screen_back), help_screen_back);
+    mvaddstr(top + 6, centerx(about_screen_back), about_screen_back);
     attroff(A_STANDOUT | COLOR_PAIR(2));
 
     return 0;

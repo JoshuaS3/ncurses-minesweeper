@@ -15,11 +15,12 @@
 #include "../game/reset.h"
 #include "../state.h"
 #include "../time.h"
+#include "../strings.h"
 #include "pages.h"
 #include "text.h"
 
 static int elapsed = 0;
-void render_topbar(int left, int right, game_board *board) {
+void render_topbar(int top, int left, int right, game_board *board) {
     if (board->status == Waiting) {
         elapsed = 0;
     } else if (board->status == Playing) {
@@ -27,31 +28,33 @@ void render_topbar(int left, int right, game_board *board) {
     }
     attron(A_BOLD);
     if (elapsed < 999)
-        mvprintw(0, right - 4, "%03d", elapsed);
+        mvprintw(top, right - 4, "%03d", elapsed);
     else
-        mvaddstr(0, right - 4, "999");
-    mvprintw(0, left, "%03d", board->mines_left);
+        mvaddstr(top, right - 4, "999");
+    mvprintw(top, left, "%03d", board->mines_left);
     attroff(A_BOLD);
     int center = (int)(COLS / 2 - 1);
     switch (board->status) {
         case Waiting:
         case Playing:
-            mvaddstr(0, center, "._.");
+            mvaddstr(top, center, "._.");
             break;
         case Done:
-            mvaddstr(0, center, "^-^");
+            mvaddstr(top, center, "^-^");
             break;
         case Kaboom:
-            mvaddstr(0, center, "x_x");
+            mvaddstr(top, center, "x_x");
             break;
     }
 }
 
 int draw_game(game_state *state, int ch) {
     game_board *board = state->board;
+    int board_top = centery() - board->height/2 - 1;
+    if (board_top < 0) board_top = 0;
     int bound_left = (int)(COLS / 2) - board->width;
     int bound_right = (int)(COLS / 2) + board->width;
-    render_topbar(bound_left, bound_right, board);
+    render_topbar(board_top, bound_left, bound_right, board);
 
     // handle input
     switch (ch) {
@@ -62,8 +65,7 @@ int draw_game(game_state *state, int ch) {
             clear();
             break;
         }
-        case 'q':
-        case 'Q': {
+        case 27: {
             clear();
             reset_board(state->board);
             state->page = Title;
@@ -78,7 +80,7 @@ int draw_game(game_state *state, int ch) {
     attron(A_BOLD);
     for (int cell = 0; cell < board->width * board->height; cell++) {
         int x = bound_left + cell % board->width * 2;
-        int y = 1 + cell / board->width;
+        int y = board_top + 1 + cell / board->width;
         if (board->current_cell == cell) attron(A_STANDOUT); // highlight selected cell
         game_board_cell *this_cell = &board->cells[cell];
         if (!this_cell->flagged) {

@@ -19,9 +19,12 @@
 #include "state.h"
 
 int main(void) {
-    printf("ncurses-minesweeper Copyright (c) Joshua 'joshuas3' Stockin 2020\n");
-    printf("<https://joshstock.in>\n");
-    printf("<https://git.joshstock.in/ncurses-minesweeper>\n");
+    initscr();
+    if (!has_colors()) {
+        endwin();
+        printf("Your terminal doesn't support color.\n");
+        return 1;
+    }
 
     game_state *state = calloc(1, sizeof(game_state));
     state->page = Title;
@@ -37,17 +40,11 @@ int main(void) {
     board->cells = NULL;
     reset_board(board);
 
-    initscr();
     timeout(30);
     noecho();
     cbreak();
     keypad(stdscr, TRUE);
 
-    if (!has_colors()) {
-        printf("Your terminal doesn't support color.\n");
-        endwin();
-        return 1;
-    }
     init_colorpairs();
     curs_set(0);
 
