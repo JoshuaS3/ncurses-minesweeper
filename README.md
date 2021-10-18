@@ -57,9 +57,9 @@ Stockin](https://joshstock.in/) and licensed under the [MIT License](LICENSE).
 A form of the following should be present in each source or header file.
 
 ```txt
-ncurses-minesweeper Copyright (c) 2020 Joshua 'joshuas3' Stockin
+ncurses-minesweeper Copyright (c) 2021 Joshua 'joshuas3' Stockin
 <https://joshstock.in>
-<https://github.com/JoshuaS3/ncurses-minesweeper>
+<https://git.joshstock.in/ncurses-minesweeper>
 
 This software is licensed and distributed under the terms of the MIT License.
 See the MIT License in the LICENSE file of this project's root folder.
@@ -68,4 +68,4 @@ This comment block and its contents, including this disclaimer, MUST be
 preserved in all copies or distributions of this software's source.
 ```
 
-&lt;<https://joshstock.in>&gt; | josh@joshstock.in | joshuas3#9641
+&lt;<https://joshstock.in>&gt; | [josh@joshstock.in](mailto:josh@joshstock.in) | joshuas3#9641
