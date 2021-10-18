@@ -53,7 +53,8 @@ int draw_game(game_state *state, int ch) {
     int board_top = centery() - board->height/2 - 1;
     if (board_top < 0) board_top = 0;
     int bound_left = (int)(COLS / 2) - board->width;
-    int bound_right = (int)(COLS / 2) + board->width;
+    if (bound_left < 0) bound_left = 0;
+    int bound_right = bound_left + board->width * 2;
     render_topbar(board_top, bound_left, bound_right, board);
 
     // handle input
