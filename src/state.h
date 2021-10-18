@@ -38,6 +38,7 @@ typedef struct game_board {
 
 typedef struct game_state {
     DrawPage page;
+    DrawPage last_page;
     uint8_t page_selection; // character/token that determines what part of the screen (button/input) is selected
     game_board *board;
 } game_state;

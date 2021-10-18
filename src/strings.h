@@ -20,6 +20,8 @@ extern const char *title_screen_splash_small[5];
 extern const char *title_screen_splash_text;
 extern const char *title_screen_buttons[5];
 
+extern const char *game_help_note;
+
 extern const char *about_screen_title;
 extern const char *about_website_source;
 extern const char *about_website_home;

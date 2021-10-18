@@ -54,6 +54,7 @@ int draw_title_screen(game_state *state, int ch) {
                 }
                 case 2: {
                     state->page = Help;
+                    state->last_page = Title;
                     return draw_help_screen(state, 0);
                 }
                 case 3: {

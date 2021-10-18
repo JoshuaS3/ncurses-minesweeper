@@ -31,6 +31,8 @@ const char *title_screen_splash_small[5] = {
 const char *title_screen_splash_text = "MINESWEEPER";
 const char *title_screen_buttons[5] = {"PLAY", "OPTIONS", "HELP", "ABOUT", "EXIT"};
 
+const char *game_help_note = "Press <?> for help, <q> to quit";
+
 const char *about_screen_title = "ABOUT";
 const char *about_website_source = "<https://git.joshstock.in/ncurses-minesweeper>";
 const char *about_website_home = "<https://joshstock.in>";

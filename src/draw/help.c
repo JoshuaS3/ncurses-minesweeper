@@ -28,8 +28,11 @@ int draw_help_screen(game_state *state, int ch) {
         case ' ':
         case KEY_ENTER: {
             clear();
-            state->page = Title;
-            return draw_title_screen(state, 0);
+            state->page = state->last_page;
+            if (state->page == Title)
+                return draw_title_screen(state, 0);
+            else if (state->page == Game)
+                return draw_game(state, -2);
             break;
         }
         case 0:

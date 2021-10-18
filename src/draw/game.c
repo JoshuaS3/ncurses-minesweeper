@@ -72,6 +72,12 @@ int draw_game(game_state *state, int ch) {
             state->page_selection = 0;
             return draw_title_screen(state, 0);
         }
+        case '?': {
+            clear();
+            state->page = Help;
+            state->last_page = Game;
+            return draw_help_screen(state, 0);
+        }
     }
 
     game(state, ch); // pass input to game controller
@@ -119,5 +125,9 @@ int draw_game(game_state *state, int ch) {
         if (board->current_cell == cell) attroff(A_STANDOUT); // un-highlight selected cell
     }
     attroff(A_BOLD);
+
+    // write help note at bottom
+    mvprintw(LINES - 1, centerx(game_help_note), game_help_note);
+
     return 0;
 }
